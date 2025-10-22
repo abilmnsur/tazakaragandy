@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoKaraganda: Қарағандының жасыл белдеулері</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    
+    <!-- Жеке CSS -->
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f5f5f5;
+        }
+        header { 
+            background: #4CAF50; 
+            color: white; 
+            padding: 20px 0; 
+            text-align: center; 
+        }
+        main { 
+            padding: 20px; 
+            max-width: 1200px; 
+            margin: auto; 
+            background: white;
+        }
+        h2 { color: #2E7D32; }
+        #map, iframe { 
+            width: 100%; 
+            height: 600px; 
+            margin: 20px 0; 
+            border: 1px solid #ccc;
+        }
+        ul { margin-left: 20px; }
+        .section { margin-bottom: 40px; }
+        .legend { 
+            background: white; 
+            padding: 10px; 
+            border: 1px solid gray; 
+            line-height: 1.4;
+        }
+        .legend i { 
+            width: 18px; 
+            height: 18px; 
+            display: inline-block; 
+            margin-right: 5px; 
+        }
+        p { text-align: justify; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>EcoKaraganda: Чистый ауа – Жақсы өмір</h1>
+</header>
+
+<main>
+    <!-- Мәселе -->
+    <div class="section">
+        <h2>Мәселенің өзектілігі</h2>
+        <p>
+            Қарағанды қаласы – еліміздің ірі индустриалды орталығы. Соңғы жылдары мұнда ауа ластануының деңгейі күрт өсіп,
+            экологиялық жағдай ушығып отыр. Қыста көмірмен жылыту және өндірістік кәсіпорындардың шығарындылары салдарынан
+            ауадағы зиянды заттар (PM2.5 және PM10) мөлшері санитарлық нормадан 10–20 есе асып түседі. 
+            Бұл тұрғындардың тыныс алу ауруларының көбеюіне, балалар мен қарттардың денсаулығының нашарлауына,
+            сондай-ақ қала экожүйесінің бұзылуына әкеліп соғуда. Сондықтан ауаны тазарту, көгалдандыру және
+            экологиялық мәдениетті арттыру – қазіргі таңда қала үшін аса маңызды стратегиялық міндет болып табылады.
+        </p>
+    </div>
+
+    <!-- Мақсат -->
+    <div class="section">
+        <h2>Жобаның мақсаты</h2>
+        <p>
+            Қарағанды қаласында ауа сапасын жақсарту және тұрғындардың өмір сүру сапасын арттыру мақсатында жасыл аймақтарды көбейту,
+            экологиялық мәдениетті дамыту, және ауа мониторингін цифрлық түрде бақылау жүйесін енгізу.
+        </p>
+    </div>
+
+    <!-- Міндеттер -->
+    <div class="section">
+        <h2>Жобаның міндеттері</h2>
+        <ul>
+            <li>Қала аумағында жасыл аймақтар мен ағаш отырғызу белдеулерін көбейту.</li>
+            <li>Әр ауданға ауа сапасын өлшейтін датчиктер орнатып, деректерді онлайн картада көрсету.</li>
+            <li>Тұрғындар арасында экологиялық мәдениетті қалыптастыру және экобілімді арттыру.</li>
+        </ul>
+    </div>
+
+    <!-- Ұсынылып отырған шешімдер -->
+    <div class="section">
+        <h2>Ұсынылып отырған шешімдер</h2>
+        <ul>
+            <li>
+                <b>Жасыл белдеулер құру:</b>
+                <ul>
+                    <li>Көшелер бойында, мектептер мен скверлерде ағаш отырғызу.</li>
+                    <li>Буферлік аймақтар арқылы өнеркәсіптік шығарындыларды азайту.</li>
+                </ul>
+            </li>
+            <li>
+                <b>Ауа сапасын өлшейтін датчиктер орнату:</b>
+                <ul>
+                    <li>Қала бойынша ауа сапасын нақты уақыт режимінде бақылау.</li>
+                    <li>Онлайн картада көрнекі ақпарат көрсету.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Жасыл белдеулер картасы -->
+    <div class="section">
+        <h2>Жасыл белдеулер картасы</h2>
+        <div id="map"></div>
+    </div>
+
+    <!-- AQICN картасы -->
+    <div class="section">
+        <h2>Қарағандыдағы ауа сапасы (AQICN)</h2>
+        <iframe src="https://aqicn.org/map/karagandy/ru/" frameborder="0"></iframe>
+    </div>
+</main>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    // Карта жасау
+    var map = L.map('map').setView([49.8, 73.1], 12);
+
+    // OpenStreetMap қабаты
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Майқұдық ауданы
+    var mayqudyq = L.polygon([
+        [49.825, 73.105],
+        [49.83, 73.11],
+        [49.82, 73.12],
+        [49.815, 73.115]
+    ], {color: 'lightgreen', fillOpacity: 0.5}).addTo(map)
+    .bindPopup('<b>Майқұдық ауданы</b><br>Жасыл белдеу: өнеркәсіп шетінде, мектеп маңы');
+
+    // Оңтүстік-Шығыс ауданы
+    var southEast = L.polygon([
+        [49.79, 73.14],
+        [49.795, 73.15],
+        [49.785, 73.16],
+        [49.78, 73.15]
+    ], {color: 'green', fillOpacity: 0.5}).addTo(map)
+    .bindPopup('<b>Оңтүстік-Шығыс ауданы</b><br>Жасыл белдеу: мектептер, саябақтар');
+
+    // Орталық ауданы
+    var central = L.polygon([
+        [49.83, 73.12],
+        [49.835, 73.125],
+        [49.825, 73.135],
+        [49.82, 73.13]
+    ], {color: 'darkgreen', fillOpacity: 0.5}).addTo(map)
+    .bindPopup('<b>Орталық ауданы</b><br>Жасыл белдеу: қала орталығы, скверлер');
+
+    // Легенда
+    var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'legend');
+        div.innerHTML += '<h4>Жасыл белдеулер</h4>';
+        div.innerHTML += '<i style="background:lightgreen; opacity:0.5;"></i> Майқұдық<br>';
+        div.innerHTML += '<i style="background:green; opacity:0.5;"></i> Оңтүстік-Шығыс<br>';
+        div.innerHTML += '<i style="background:darkgreen; opacity:0.5;"></i> Орталық<br>';
+        return div;
+    };
+    legend.addTo(map);
+</script>
+
+</body>
+</html> 
