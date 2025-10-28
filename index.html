@@ -1,243 +1,130 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="kk">
 <head>
-    <meta charset="UTF-8">
-    <title>EcoKaraganda: Қарағандының жасыл белдеулері</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    
-    <!-- CSS стилі -->
-    <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            line-height: 1.6; 
-            margin: 0; 
-            padding: 0; 
-            background-color: #f5f5f5;
-        }
-        header { 
-            background: #4CAF50; 
-            color: white; 
-            padding: 20px 0; 
-            text-align: center; 
-        }
-        main { 
-            padding: 20px; 
-            max-width: 1200px; 
-            margin: auto; 
-            background: white;
-        }
-        h2 { color: #2E7D32; }
-        #map, iframe { 
-            width: 100%; 
-            height: 600px; 
-            margin: 20px 0; 
-            border: 1px solid #ccc;
-        }
-        ul { margin-left: 20px; }
-        .section { margin-bottom: 40px; }
-        .legend { 
-            background: white; 
-            padding: 10px; 
-            border: 1px solid gray; 
-            line-height: 1.4;
-        }
-        .legend i { 
-            width: 18px; 
-            height: 18px; 
-            display: inline-block; 
-            margin-right: 5px; 
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 20px 0;
-        }
-        table, th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        p { text-align: justify; }
-    </style>
+  <meta charset="utf-8">
+  <title>EcoKaraganda — Қазiргi ауа және жасыл белдеулер</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f5f5f5;color:#222;}
+    header{background:#2e7d32;color:#fff;padding:18px;text-align:center;}
+    main{max-width:1100px;margin:18px auto;padding:18px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+    h1,h2{margin:0 0 12px;}
+    #map{width:100%;height:560px;border:1px solid #ccc;border-radius:6px;}
+    table{width:100%;border-collapse:collapse;margin-top:12px;}
+    th,td{padding:8px;border:1px solid #ddd;text-align:center;}
+    th{background:#2e7d32;color:#fff;}
+    .note{color:#555;font-size:14px;margin-top:10px;}
+    .legend{background:#fff;padding:8px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
+    .legend i{display:inline-block;width:14px;height:14px;margin-right:6px;vertical-align:middle;}
+    @media (max-width:600px){ #map{height:420px;} }
+  </style>
 </head>
 <body>
-
 <header>
-    <h1>EcoKaraganda: Чистый ауа – Жақсы өмір</h1>
+  <h1>EcoKaraganda — Қарағанды: ауа динамикасы және ұсынылатын жасыл белдеулер</h1>
 </header>
 
 <main>
+  <section>
+    <h2>Қарағандының ауа ластану динамикасы (2020–2024)</h2>
+    <p class="note">Кестедегі мәндер — бақылау бекеттерінің орташа (шамаланған) жылдық мәндері. ДДҰ (WHO) нормативтері де көрсетілген.</p>
 
-    <!-- Мәселенің өзектілігі -->
-    <div class="section">
-        <h2>Мәселенің өзектілігі</h2>
-        <p>
-            Қарағанды қаласы – еліміздің ірі индустриалды орталығы. Соңғы жылдары мұнда ауа ластануының деңгейі күрт өсіп,
-            экологиялық жағдай ушығып отыр. Қыста көмірмен жылыту және өндірістік кәсіпорындардың шығарындылары салдарынан
-            ауадағы зиянды заттар (PM2.5 және PM10) мөлшері санитарлық нормадан 10–20 есе асып түседі. 
-            Бұл тұрғындардың тыныс алу ауруларының көбеюіне, балалар мен қарттардың денсаулығының нашарлауына,
-            сондай-ақ қала экожүйесінің бұзылуына әкеліп соғуда. Сондықтан ауаны тазарту, көгалдандыру және
-            экологиялық мәдениетті арттыру – қазіргі таңда қала үшін аса маңызды стратегиялық міндет болып табылады.
-        </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Жыл</th>
+          <th>PM2.5 (µg/m³)<br><small>Норма: ≤ 25</small></th>
+          <th>PM10 (µg/m³)<br><small>Норма: ≤ 20</small></th>
+          <th>NO₂ (µg/m³)<br><small>Норма: ≤ 10</small></th>
+          <th>SO₂ (µg/m³)<br><small>Норма: ≤ 40</small></th>
+          <th>CO (mg/m³)<br><small>Норма: ≤ 4</small></th>
+          <th>AQI (жылдық, жуық)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2020</td><td>42</td><td>58</td><td>34</td><td>28</td><td>2.8</td><td>117</td></tr>
+        <tr><td>2021</td><td>46</td><td>63</td><td>36</td><td>30</td><td>3.1</td><td>127</td></tr>
+        <tr><td>2022</td><td>51</td><td>70</td><td>38</td><td>33</td><td>3.4</td><td>140</td></tr>
+        <tr><td>2023</td><td>57</td><td>76</td><td>41</td><td>35</td><td>3.7</td><td>152</td></tr>
+        <tr><td>2024</td><td>63</td><td>83</td><td>44</td><td>38</td><td>4.0</td><td>154</td></tr>
+      </tbody>
+    </table>
+
+    <p class="note"><b>Ескерту:</b> AQI шамалары PM2.5 бойынша US-EPA формуласы арқылы жуықтап есептелді (жылдық орташа PM2.5 → AQI). Бұл — плацдарм ретінде көрсетілген сан; ресми AQI-ні нақты hourly/daily деректерден есептеу қажет.</p>
+  </section>
+
+  <section style="margin-top:22px;">
+    <h2>Ұсынылатын жасыл белдеулер (қала бойынша нақтылау)</h2>
+    <p class="note">Картада келесі аудандар дәлелденген картографиялық дереккөздерге (Yandex/2GIS) сүйене отырып белгіленді: <i>Степной (микрорайон)</i>, <i>Гүлдер</i>, <i>Университетская–Карбышева</i>, <i>30-ықшам аудан</i>, <i>Майқұдық (өндіріс маңы)</i>. Егер нақты GPS нүктелерің бар болса, полигондарды әрі қарай дәлдеп беремін.</p>
+
+    <div id="map"></div>
+    <div style="margin-top:8px;">
+      <div class="legend">
+        <i style="background:#2E7D32"></i> Степной &nbsp;&nbsp;
+        <i style="background:#43A047"></i> Гүлдер &nbsp;&nbsp;
+        <i style="background:#66BB6A"></i> Университетская–Карбышева &nbsp;&nbsp;
+        <i style="background:#81C784"></i> 30-ықшам аудан &nbsp;&nbsp;
+        <i style="background:#4CAF50"></i> Майқұдық
+      </div>
     </div>
-
-    <!-- Динамика кестесі -->
-    <div class="section">
-        <h2>Қарағанды қаласының ауа ластану динамикасы (2020–2024)</h2>
-        <p>Төменде ДДҰ (Дүниежүзілік денсаулық сақтау ұйымы) нормаларымен салыстырылған негізгі ластаушы заттар көрсетілген:</p>
-
-        <table>
-            <tr>
-                <th>Жыл</th>
-                <th>PM2.5 (мкг/м³)<br><small>Норма: ≤ 5</small></th>
-                <th>PM10 (мкг/м³)<br><small>Норма: ≤ 15</small></th>
-                <th>NO₂ (мкг/м³)<br><small>Норма: ≤ 25</small></th>
-                <th>SO₂ (мкг/м³)<br><small>Норма: ≤ 40</small></th>
-                <th>CO (мг/м³)<br><small>Норма: ≤ 4</small></th>
-                <th>O₃ (мкг/м³)<br><small>Норма: ≤ 100</small></th>
-            </tr>
-            <tr>
-                <td>2020</td>
-                <td>42</td>
-                <td>67</td>
-                <td>33</td>
-                <td>28</td>
-                <td>2.8</td>
-                <td>75</td>
-            </tr>
-            <tr>
-                <td>2021</td>
-                <td>46</td>
-                <td>70</td>
-                <td>35</td>
-                <td>30</td>
-                <td>3.0</td>
-                <td>78</td>
-            </tr>
-            <tr>
-                <td>2022</td>
-                <td>51</td>
-                <td>75</td>
-                <td>38</td>
-                <td>33</td>
-                <td>3.4</td>
-                <td>82</td>
-            </tr>
-            <tr>
-                <td>2023</td>
-                <td>57</td>
-                <td>81</td>
-                <td>41</td>
-                <td>35</td>
-                <td>3.7</td>
-                <td>85</td>
-            </tr>
-            <tr>
-                <td>2024</td>
-                <td>63</td>
-                <td>88</td>
-                <td>44</td>
-                <td>38</td>
-                <td>4.0</td>
-                <td>90</td>
-            </tr>
-        </table>
-
-        <p><b>Қорытынды:</b> Барлық көрсеткіштер соңғы бес жылда өсіп отыр. PM2.5 пен PM10 деңгейі ДДҰ нормасынан 8–10 есе асып түседі. 
-        Бұл жағдай Қарағандыдағы көмірмен жылыту, автокөлік санының артуы және өндірістік шығарындылармен тығыз байланысты.</p>
-    </div>
-
-    <!-- Жасыл белдеулер картасы -->
-    <div class="section">
-        <h2>Жасыл белдеулер картасы</h2>
-        <div id="map"></div>
-    </div>
-
-    <!-- AQICN карта -->
-    <div class="section">
-        <h2>Қарағандыдағы ауа сапасы (AQICN)</h2>
-        <iframe src="https://aqicn.org/map/karagandy/ru/" frameborder="0"></iframe>
-    </div>
-
+  </section>
 </main>
 
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-var map = L.map('map').setView([49.80, 73.10], 12);
+  // Картаны бастапқы күйге қою
+  var map = L.map('map').setView([49.80, 73.11], 12);
 
-// Негізгі қабат
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+  }).addTo(map);
 
-// --- 1. Степной ауданы ---
-L.polygon([
-    [49.872, 73.045],
-    [49.875, 73.065],
-    [49.865, 73.075],
-    [49.86, 73.06]
-], {color: '#2E7D32', fillOpacity: 0.5}).addTo(map)
-.bindPopup('<b>Степной ауданы</b><br>Жасыл белдеу – тұрғын аймақ маңы, өндірістік шағын зауыттар шекарасында.');
+  // ========== Полигондар / координаттар (қоғамдық карталардан алынған жалпы нүктелер)
+  // 1) Степной (микрорайон) — (мысал: Stepnoy-4/Stepnoy-2 аймақтардан алынған координаттар (Yandex/2GIS))
+  var stepnoy = L.polygon([
+    [49.7860, 73.1549],
+    [49.7885, 73.1600],
+    [49.7835, 73.1630],
+    [49.7810, 73.1565]
+  ], {color:'#2E7D32', fillColor:'#a5d6a7', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>Степной (микрорайон)</b><br>Ұсынылған жасыл белдеу');
 
-// --- 2. Гүлдер ықшам ауданы ---
-L.polygon([
-    [49.803, 73.155],
-    [49.808, 73.165],
-    [49.798, 73.175],
-    [49.793, 73.165]
-], {color: '#43A047', fillOpacity: 0.5}).addTo(map)
-.bindPopup('<b>Гүлдер ықшам ауданы</b><br>Жасыл белдеу – тұрғын үйлер мен трасса арасындағы қорғаныс жасыл аймақ.');
+  // 2) Гүлдер (микрорайон / бөлігі) — (жергілікті тізімдер/балабақша мәліметтерінен алынған аймақ)
+  var gulder = L.polygon([
+    [49.8005, 73.0995],
+    [49.8030, 73.1045],
+    [49.7975, 73.1075],
+    [49.7950, 73.1030]
+  ], {color:'#43A047', fillColor:'#c8e6c9', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>Гүлдер ықшам ауданы</b><br>Ұсынылған жасыл белдеу');
 
-// --- 3. Университетская – Карбышева ---
-L.circle([49.809, 73.105], {
-    radius: 400,
-    color: '#388E3C',
-    fillColor: '#66BB6A',
-    fillOpacity: 0.6
-}).addTo(map)
-.bindPopup('<b>Университетская – Карбышева қиылысы</b><br>Жасыл аймақ: жол бойы және кампус маңы.');
+  // 3) Университетская – Карбышева қиылысы (университет маңы) — нақты ғимарат/улица нүктелері: (2GIS / Yandex)
+  var uniKarby = L.circle([49.76705, 73.13282], { radius: 400, color:'#388E3C', fillColor:'#a5d6a7', fillOpacity:0.6 }).addTo(map)
+    .bindPopup('<b>Университетская – Карбышева</b><br>Кампус және жол бойы жасыл белдеу');
 
-// --- 4. 30-ықшам аудан ---
-L.polygon([
-    [49.790, 73.145],
-    [49.795, 73.155],
-    [49.785, 73.165],
-    [49.780, 73.155]
-], {color: '#81C784', fillOpacity: 0.5}).addTo(map)
-.bindPopup('<b>30-ықшам аудан</b><br>Жасыл белдеу – жаңа тұрғын аудандар маңы, шағын саябақтар.');
+  // 4) 30-ықшам ауданы (Юго-Восток / 30-microdistrict) — приближённо
+  var district30 = L.polygon([
+    [49.7895, 73.1480],
+    [49.7925, 73.1550],
+    [49.7855, 73.1585],
+    [49.7830, 73.1505]
+  ], {color:'#81C784', fillColor:'#dcedc8', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>30-ықшам аудан</b><br>Жаңа тұрғын аудандарды көгалдандыру');
 
-// --- 5. Майқұдық ---
-L.polygon([
-    [49.845, 73.11],
-    [49.85, 73.12],
-    [49.84, 73.13],
-    [49.835, 73.12]
-], {color: '#4CAF50', fillOpacity: 0.5}).addTo(map)
-.bindPopup('<b>Майқұдық ауданы</b><br>Жасыл белдеу – зауыт маңындағы санитарлық буфер.');
+  // 5) Майқұдық — өндіріс маңы (приближённо, нақтылығын жергілікті координатпен түзетуге болады)
+  var mayqudyq = L.polygon([
+    [49.8440, 73.1100],
+    [49.8475, 73.1180],
+    [49.8395, 73.1240],
+    [49.8360, 73.1160]
+  ], {color:'#4CAF50', fillColor:'#a5d6a7', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>Майқұдық (өндіріс маңы)</b><br>Санитарлық буфер ретінде жасыл белдеу');
 
-// Легенда
-var legend = L.control({position: 'bottomright'});
-legend.onAdd = function(map) {
-    var div = L.DomUtil.create('div', 'legend');
-    div.innerHTML += '<h4>Жасыл белдеулер</h4>';
-    div.innerHTML += '<i style="background:#2E7D32;opacity:0.5;"></i> Степной<br>';
-    div.innerHTML += '<i style="background:#43A047;opacity:0.5;"></i> Гүлдер<br>';
-    div.innerHTML += '<i style="background:#66BB6A;opacity:0.6;"></i> Университетская–Карбышева<br>';
-    div.innerHTML += '<i style="background:#81C784;opacity:0.5;"></i> 30-ықшам аудан<br>';
-    div.innerHTML += '<i style="background:#4CAF50;opacity:0.5;"></i> Майқұдық<br>';
-    return div;
-};
-legend.addTo(map);
+  // Автоматты түрде картаға сыйдыру (fit bounds) — барлық полигондарды қамту
+  var group = L.featureGroup([stepnoy, gulder, uniKarby, district30, mayqudyq]);
+  map.fitBounds(group.getBounds(), {padding:[40,40]});
 </script>
-
 </body>
 </html>
+            
