@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="kk">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,6 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     
-    <!-- Жеке CSS -->
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -43,6 +43,7 @@
             padding: 10px; 
             border: 1px solid gray; 
             line-height: 1.4;
+            font-size: 14px;
         }
         .legend i { 
             width: 18px; 
@@ -56,7 +57,7 @@
 <body>
 
 <header>
-    <h1>EcoKaraganda: Таза ауа – салауатты болашақ</h1>
+    <h1>EcoKaraganda: Таза ауа — салауатты өмір 🌿</h1>
 </header>
 
 <main>
@@ -113,13 +114,13 @@
         </ul>
     </div>
 
-    <!-- Жасыл белдеулер картасы -->
+    <!-- Негізгі карта -->
     <div class="section">
         <h2>Жасыл белдеулер картасы</h2>
         <div id="map"></div>
     </div>
 
-    <!-- AQICN картасы -->
+    <!-- AQICN -->
     <div class="section">
         <h2>Қарағандыдағы ауа сапасы (AQICN)</h2>
         <iframe src="https://aqicn.org/map/karagandy/ru/" frameborder="0"></iframe>
@@ -129,53 +130,57 @@
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // Карта жасау
-    var map = L.map('map').setView([49.8, 73.1], 12);
+    var map = L.map('map').setView([49.806, 73.085], 12);
 
-    // OpenStreetMap қабаты
+    // Негізгі қабат
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
     }).addTo(map);
 
-    // Майқұдық ауданы
-    var mayqudyq = L.polygon([
-        [49.825, 73.105],
-        [49.83, 73.11],
-        [49.82, 73.12],
-        [49.815, 73.115]
-    ], {color: 'lightgreen', fillOpacity: 0.5}).addTo(map)
-    .bindPopup('<b>Майқұдық ауданы</b><br>Жасыл белдеу: өнеркәсіп шетінде, мектеп маңы');
+    // Ағаш белгішесі
+    var treeIcon = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png',
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -35]
+    });
 
-    // Оңтүстік-Шығыс ауданы
-    var southEast = L.polygon([
-        [49.79, 73.14],
-        [49.795, 73.15],
-        [49.785, 73.16],
-        [49.78, 73.15]
-    ], {color: 'green', fillOpacity: 0.5}).addTo(map)
-    .bindPopup('<b>Оңтүстік-Шығыс ауданы</b><br>Жасыл белдеу: мектептер, саябақтар');
+    // Белдеулер
+    var areas = [
+        { name: "Степной", coords: [49.833, 73.146] },
+        { name: "Гүлдер", coords: [49.822, 73.090] },
+        { name: "Университетская–Карбышева", coords: [49.808, 73.085] },
+        { name: "30 ықшам аудан", coords: [49.807, 73.066] },
+        { name: "Майқұдық", coords: [49.882, 73.142] }
+    ];
 
-    // Орталық ауданы
-    var central = L.polygon([
-        [49.83, 73.12],
-        [49.835, 73.125],
-        [49.825, 73.135],
-        [49.82, 73.13]
-    ], {color: 'darkgreen', fillOpacity: 0.5}).addTo(map)
-    .bindPopup('<b>Орталық ауданы</b><br>Жасыл белдеу: қала орталығы, скверлер');
+    areas.forEach(a => {
+        L.marker(a.coords, { icon: treeIcon }).addTo(map)
+        .bindPopup("<b>" + a.name + "</b><br>Жасыл белдеу жобасы 🌱");
+    });
+
+    // Алаңдарды белгілеу
+    L.circle([49.833, 73.146], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 700 }).addTo(map);
+    L.circle([49.822, 73.090], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 600 }).addTo(map);
+    L.circle([49.808, 73.085], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 650 }).addTo(map);
+    L.circle([49.807, 73.066], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 600 }).addTo(map);
+    L.circle([49.882, 73.142], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 800 }).addTo(map);
 
     // Легенда
     var legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'legend');
         div.innerHTML += '<h4>Жасыл белдеулер</h4>';
-        div.innerHTML += '<i style="background:lightgreen; opacity:0.5;"></i> Майқұдық<br>';
-        div.innerHTML += '<i style="background:green; opacity:0.5;"></i> Оңтүстік-Шығыс<br>';
-        div.innerHTML += '<i style="background:darkgreen; opacity:0.5;"></i> Орталық<br>';
+        div.innerHTML += '<i style="background:#a5d6a7;opacity:0.6;"></i> Степной<br>';
+        div.innerHTML += '<i style="background:#81c784;opacity:0.6;"></i> Гүлдер<br>';
+        div.innerHTML += '<i style="background:#66bb6a;opacity:0.6;"></i> Университетская–Карбышева<br>';
+        div.innerHTML += '<i style="background:#388e3c;opacity:0.6;"></i> 30 ықшам аудан<br>';
+        div.innerHTML += '<i style="background:#2e7d32;opacity:0.6;"></i> Майқұдық<br>';
         return div;
     };
     legend.addTo(map);
 </script>
 
 </body>
-</html> 
+</html>
