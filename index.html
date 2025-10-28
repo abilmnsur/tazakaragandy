@@ -197,48 +197,57 @@
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([49.806, 73.085], 12);
+  // Картаны бастапқы күйге қою
+  var map = L.map('map').setView([49.80, 73.11], 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
 
-    var treeIcon = L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png',
-        iconSize: [38, 38],
-        iconAnchor: [19, 38],
-        popupAnchor: [0, -35]
-    });
+  // ========== Полигондар / координаттар (қоғамдық карталардан алынған жалпы нүктелер)
+  // 1) Степной (микрорайон) — (мысал: Stepnoy-4/Stepnoy-2 аймақтардан алынған координаттар (Yandex/2GIS))
+  var stepnoy = L.polygon([
+    [49.7860, 73.1549],
+    [49.7885, 73.1600],
+    [49.7835, 73.1630],
+    [49.7810, 73.1565]
+  ], {color:'#2E7D32', fillColor:'#a5d6a7', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>Степной (микрорайон)</b><br>Ұсынылған жасыл белдеу');
 
-    var areas = [
-        { name: "Степной", coords: [49.833, 73.146] },
-        { name: "Гүлдер", coords: [49.822, 73.090] },
-        { name: "Университетская–Карбышева", coords: [49.808, 73.085] },
-        { name: "30 ықшам аудан", coords: [49.807, 73.066] },
-        { name: "Майқұдық", coords: [49.882, 73.142] }
-    ];
+  // 2) Гүлдер (микрорайон / бөлігі) — (жергілікті тізімдер/балабақша мәліметтерінен алынған аймақ)
+  var gulder = L.polygon([
+    [49.8005, 73.0995],
+    [49.8030, 73.1045],
+    [49.7975, 73.1075],
+    [49.7950, 73.1030]
+  ], {color:'#43A047', fillColor:'#c8e6c9', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>Гүлдер ықшам ауданы</b><br>Ұсынылған жасыл белдеу');
 
-    areas.forEach(a => {
-        L.marker(a.coords, { icon: treeIcon }).addTo(map)
-        .bindPopup("<b>" + a.name + "</b><br>Жасыл белдеу жобасы 🌱");
-    });
+  // 3) Университетская – Карбышева қиылысы (университет маңы) — нақты ғимарат/улица нүктелері: (2GIS / Yandex)
+  var uniKarby = L.circle([49.76705, 73.13282], { radius: 400, color:'#388E3C', fillColor:'#a5d6a7', fillOpacity:0.6 }).addTo(map)
+    .bindPopup('<b>Университетская – Карбышева</b><br>Кампус және жол бойы жасыл белдеу');
 
-    L.circle([49.833, 73.146], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 700 }).addTo(map);
-    L.circle([49.822, 73.090], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 600 }).addTo(map);
-    L.circle([49.808, 73.085], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 650 }).addTo(map);
-    L.circle([49.807, 73.066], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 600 }).addTo(map);
-    L.circle([49.882, 73.142], { color: "green", fillColor: "#a5d6a7", fillOpacity: 0.4, radius: 800 }).addTo(map);
+  // 4) 30-ықшам ауданы (Юго-Восток / 30-microdistrict) — приближённо
+  var district30 = L.polygon([
+    [49.7895, 73.1480],
+    [49.7925, 73.1550],
+    [49.7855, 73.1585],
+    [49.7830, 73.1505]
+  ], {color:'#81C784', fillColor:'#dcedc8', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>30-ықшам аудан</b><br>Жаңа тұрғын аудандарды көгалдандыру');
 
-    var legend = L.control({position: 'bottomright'});
-    legend.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'legend');
-        div.innerHTML += '<h4>Жасыл белдеулер</h4>';
-        div.innerHTML += '<i style="background:#a5d6a7;opacity:0.6;"></i> Степной<br>';
-        div.innerHTML += '<i style="background:#81c784;opacity:0.6;"></i> Гүлдер<br>';
-        div.innerHTML += '<i style="background:#66bb6a;opacity:0.6;"></i> Университетская–Карбышева<br>';
-        div.innerHTML += '<i style="background:#388e3c;opacity:0.6;"></i> 30 ықшам аудан<br>';
-        div.innerHTML += '<i style="background:#2e7d32;opacity:0.6;"></i> Майқұдық<br>';
+  // 5) Майқұдық — өндіріс маңы (приближённо, нақтылығын жергілікті координатпен түзетуге болады)
+  var mayqudyq = L.polygon([
+    [49.8440, 73.1100],
+    [49.8475, 73.1180],
+    [49.8395, 73.1240],
+    [49.8360, 73.1160]
+  ], {color:'#4CAF50', fillColor:'#a5d6a7', fillOpacity:0.5}).addTo(map)
+    .bindPopup('<b>Майқұдық (өндіріс маңы)</b><br>Санитарлық буфер ретінде жасыл белдеу');
+
+  // Автоматты түрде картаға сыйдыру (fit bounds) — барлық полигондарды қамту
+  var group = L.featureGroup([stepnoy, gulder, uniKarby, district30, mayqudyq]);
+  map.fitBounds(group.getBounds(), {padding:[40,40]});
         return div;
     };
     legend.addTo(map);
