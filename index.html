@@ -150,51 +150,58 @@
 </main>
 
 <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    var map = L.map('map').setView([49.80, 73.13], 12);
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // Карта орталығы — Қарағанды
+    var map = L.map('map').setView([49.806, 73.087], 12);
 
+    // Негізгі карта қабаты (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '© OpenStreetMap'
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    var treeIcon = L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png',
-        iconSize: [36, 36],
-        iconAnchor: [18, 36],
-        popupAnchor: [0, -30]
-    });
+    // ======= Жасыл белдеулер =======
 
-    // ✅ Дұрыс координаттары бар жасыл белдеулер
-    var areas = [
-        { name: "Степной", coords: [49.785844, 73.154934], radius: 700 },
-        { name: "Гүлдер", coords: [49.8005, 73.1030], radius: 650 },
-        { name: "Университетская–Карбышева", coords: [49.767711, 73.132575], radius: 600 },
-        { name: "30 ықшам аудан", coords: [49.765809, 73.151610], radius: 600 },
-        { name: "Майқұдық", coords: [49.87595, 73.19651], radius: 800 }
+    // 1. Степной
+    L.circle([49.871, 73.101], {
+      color: "green",
+      fillColor: "#4CAF50",
+      fillOpacity: 0.5,
+      radius: 600
+    }).addTo(map).bindPopup("<b>Степной</b><br>Ұсынылған жасыл белдеу аймағы");
+
+    // 2. Гүлдер мөлтек ауданы
+    L.circle([49.791, 73.155], {
+      color: "green",
+      fillColor: "#66BB6A",
+      fillOpacity: 0.5,
+      radius: 600
+    }).addTo(map).bindPopup("<b>Гүлдер</b><br>Жасыл аймақ отырғызу");
+
+    // 3. Университетская – Карбышева ауданы
+    L.circle([49.808, 73.092], {
+      color: "green",
+      fillColor: "#81C784",
+      fillOpacity: 0.5,
+      radius: 700
+    }).addTo(map).bindPopup("<b>Университетская – Карбышева</b><br>Экологиялық белдеу орны");
+
+    // 4. Майқұдық (30 ықшам аудан маңы)
+    L.circle([49.882, 73.048], {
+      color: "green",
+      fillColor: "#A5D6A7",
+      fillOpacity: 0.5,
+      radius: 700
+    }).addTo(map).bindPopup("<b>Майқұдық</b><br>Жаңа жасыл аймақ");
+
+    // Маркерлердің бәрі көрсетілетін шекара
+    var bounds = [
+      [49.871, 73.101],
+      [49.791, 73.155],
+      [49.808, 73.092],
+      [49.882, 73.048]
     ];
-
-    areas.forEach(a => {
-        L.marker(a.coords, { icon: treeIcon }).addTo(map)
-            .bindPopup("<b>" + a.name + "</b><br>Жасыл белдеу аймағы 🌱");
-        L.circle(a.coords, {
-            color: "green",
-            fillColor: "#a5d6a7",
-            fillOpacity: 0.45,
-            radius: a.radius
-        }).addTo(map);
-    });
-
-    var legend = L.control({ position: 'bottomright' });
-    legend.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'legend');
-        div.innerHTML += '<h4>Жасыл белдеулер</h4>';
-        areas.forEach(a => {
-            div.innerHTML += '<i style="background:#a5d6a7;opacity:0.6;"></i> ' + a.name + '<br>';
-        });
-        return div;
-    };
+    map.fitBounds(bounds);
     legend.addTo(map);
 </script>
 
